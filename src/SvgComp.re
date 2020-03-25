@@ -16,51 +16,53 @@ let make = (~size) => {
   let polygons = Svg.polygons(elements);
   let polylines = Svg.polylines(elements);
   let paths = Svg.paths(elements);
+  let linesArray = [||];
+  let polygonsArray = [||];
+  let polylinesArray = [||];
+  let pathsArray = [||];
+  for (i in 0 to 250) {
+    linesArray->Array.set(
+      i,
+      <line
+        x1={lines->List.nth(i).x1}
+        y1={lines->List.nth(i).y1}
+        x2={lines->List.nth(i).x2}
+        y2={lines->List.nth(i).y2}
+        stroke={lines->List.nth(i).stroke}
+      />,
+    );
+    polygonsArray->Array.set(
+      i,
+      <polygon
+        points={polygons->List.nth(i).points}
+        stroke={polygons->List.nth(i).stroke}
+        strokeWidth={polygons->List.nth(i).strokeWidth}
+        fill="None"
+      />,
+    );
+    polylinesArray->Array.set(
+      i,
+      <polygon
+        points={polylines->List.nth(i).points}
+        stroke={polylines->List.nth(i).stroke}
+        strokeWidth={polylines->List.nth(i).strokeWidth}
+        fill="None"
+      />,
+    );
+    pathsArray->Array.set(
+      i,
+      <path
+        d={paths->List.nth(i).d}
+        stroke={paths->List.nth(i).stroke}
+        strokeWidth={paths->List.nth(i).strokeWidth}
+        fill="None"
+      />,
+    );
+  };
   <svg style xmlns="http://www.w3.org/2000/svg">
-    {lines
-     ->Belt.List.map(le =>
-         <line
-           x1={le.x1}
-           y1={le.y1}
-           x2={le.x2}
-           y2={le.y2}
-           stroke={le.stroke}
-         />
-       )
-     ->Array.of_list
-     ->React.array}
-    {polygons
-     ->Belt.List.map(el =>
-         <polygon
-           points={el.points}
-           stroke={el.stroke}
-           strokeWidth={el.strokeWidth}
-           fill="None"
-         />
-       )
-     ->Array.of_list
-     ->React.array}
-    {polylines
-     ->Belt.List.map(el =>
-         <polyline
-           points={el.points}
-           stroke={el.stroke}
-           strokeWidth={el.strokeWidth}
-           fill="None"
-         />
-       )
-     ->Array.of_list
-     ->React.array}
-    {paths
-     ->Belt.List.map(el =>
-         <path
-           d={el.d}
-           stroke={el.stroke}
-           strokeWidth={el.strokeWidth}
-           fill="None"
-         />
-       )
-     ->Array.of_list
-     ->React.array}
+    linesArray->React.array
+    polygonsArray->React.array
+    polylinesArray->React.array
+    pathsArray->React.array
   </svg>;
 };
